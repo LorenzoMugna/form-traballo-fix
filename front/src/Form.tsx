@@ -1,11 +1,10 @@
-import React, {useState} from 'react';
-import { TextField, Button, Stack, FormLabel, RadioGroup, FormControlLabel, Radio, Input, Typography, FormControlLabelProps, Box } from '@mui/material';
+import {useState, Fragment} from 'react';
+import { TextField, Button, Stack, FormLabel, RadioGroup, FormControlLabel, Radio, Typography, FormControlLabelProps } from '@mui/material';
 import { MuiFileInput } from 'mui-file-input';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from "@mui/icons-material/Close";
 import styled from '@emotion/styled';
 import axios from "axios";
-import { format } from 'path';
 
 const StyledFormControlLabel = styled((props:FormControlLabelProps) => (
   <FormControlLabel {...props} />
@@ -17,7 +16,7 @@ const StyledFormControlLabel = styled((props:FormControlLabelProps) => (
 
 const RadioGroupOther = (props:any) => {
   return (
-    <React.Fragment>
+    <Fragment>
       <FormLabel id={props.title} required>{props.title}</FormLabel>
       <RadioGroup
         aria-labelledby={props.title}
@@ -39,7 +38,7 @@ const RadioGroupOther = (props:any) => {
           required={props.state === "Other"}
       />}
       </RadioGroup>
-    </React.Fragment>
+    </Fragment>
   )
 }
 
@@ -66,7 +65,7 @@ const RegisterForm = () => {
   async function handleSubmit(event:any) {
       event.preventDefault();
       const data = {
-        firstName, lastName, email, university, fos, otherFos, attendance, otherAttendance, motivation, cv:cv!
+        firstName, lastName, email, university, fos: (fos === "Other") ? otherFos : fos, attendance: (attendance === "Other") ? otherAttendance : attendance, motivation, cv:cv!
       }
       console.log(data)
       await axios.postForm("/submit", data)
@@ -74,7 +73,7 @@ const RegisterForm = () => {
 
   //action={<Link to="/login" />}>
   return (
-    <React.Fragment>
+    <Fragment>
 
       <form onSubmit={handleSubmit}>
         <Stack spacing={2} direction="row" sx={{marginBottom: 4}}>
@@ -156,9 +155,9 @@ const RegisterForm = () => {
           }}
         />
 
-        <Typography align="center"><Button variant="outlined" color="secondary" type="submit" sx={{mb:4}} endIcon={<SendIcon/>}>Apply</Button></Typography>
+        <Typography align="center"><Button variant="outlined" color="primary" type="submit" sx={{mb:4}} endIcon={<SendIcon/>}>Apply</Button></Typography>
       </form>
-    </React.Fragment>
+    </Fragment>
   )
 }
  

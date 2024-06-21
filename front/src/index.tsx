@@ -1,7 +1,5 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Form from './Form';
-import reportWebVitals from './reportWebVitals';
 import { Box, CssBaseline, GlobalStyles, Grid, Paper, ThemeProvider, Typography, createTheme } from '@mui/material';
 
 const root = ReactDOM.createRoot(
@@ -17,7 +15,7 @@ const theme = createTheme({
       main: '#485766',
     },
     background: {
-      default: '#B6313A'
+      default: 'white'
     }
   },
 });
