@@ -18,6 +18,18 @@ const theme = createTheme({
       default: 'white'
     }
   },
+  components: {
+    MuiInputBase: {
+      defaultProps: {
+        color:"primary"
+      }
+    },
+    MuiInputLabel: {
+      defaultProps:{
+        color:"primary"
+      }
+    }
+  },
 });
 
 root.render(
@@ -37,7 +49,6 @@ root.render(
     >
       <Grid item xs={3}>
         <Paper elevation={4} sx={{backgroundColor:"white", pl:4, pr:4}}>
-          
           <Box
             component="img"
             alt="Sant'Anna Business Game"
