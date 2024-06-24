@@ -68,7 +68,13 @@ const RegisterForm = () => {
         firstName, lastName, email, university, fos: (fos === "Other") ? otherFos : fos, attendance: (attendance === "Other") ? otherAttendance : attendance, motivation, cv:cv!
       }
       console.log(data)
-      await axios.postForm("/submit", data)
+      try {
+        await axios.postForm("/submit", data)
+        alert("TODO redirect to success page")
+      } catch(e:any) {
+        console.error(e)
+        alert("There was a problem in the submission, please try again later")
+      }
   }
 
   //action={<Link to="/login" />}>
