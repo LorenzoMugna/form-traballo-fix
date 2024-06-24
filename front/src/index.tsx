@@ -49,11 +49,10 @@ root.render(
     >
       <Grid item xs={3}>
         <Paper elevation={4} sx={{backgroundColor:"white", pl:4, pr:4}}>
-          <Box
-            component="img"
-            alt="Sant'Anna Business Game"
+          <img
             src="/LOGO-SABG-definitivo-3.png"
-            sx={{mb:4, mt:4, width:"40vw"}}
+            alt="Sant'Anna Business Game"
+            style={{objectFit:"contain", width:"640px", maxWidth:"80vw"}}
           />
           <Typography align="center" color="secondary"><h1>Apply for our Business Game</h1></Typography>
           <Form />
