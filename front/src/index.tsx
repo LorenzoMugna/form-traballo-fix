@@ -12,7 +12,7 @@ const theme = createTheme({
       main: '#B6313A',
     },
     secondary: {
-      main: '#485766',
+      main: '#545454',
     },
     background: {
       default: 'white'
@@ -49,13 +49,19 @@ root.render(
     >
       <Grid item xs={3}>
         <Paper elevation={4} sx={{backgroundColor:"white", pl:4, pr:4}}>
-          <img
-            src="/LOGO-SABG-definitivo-3.png"
-            alt="Sant'Anna Business Game"
-            style={{objectFit:"contain", width:"640px", maxWidth:"80vw"}}
-          />
-          <Typography align="center" color="secondary"><h1>Apply for our Business Game</h1></Typography>
-          <Form />
+          <Box
+            width="640px"
+            maxWidth="100%"
+          >
+            <img
+              src="./LOGO-SABG-definitivo-3.png"
+              alt="Sant'Anna Business Game"
+              style={{width:"100%"}}
+            />
+            <Typography align="center" color="secondary" variant="h4" sx={{mt:4,mb:2}}>Apply for our Business Game</Typography>
+            <Typography sx={{mb:4}}>Welcome, we are pleased to meet you and look forward to welcoming you here in Pisa! Please fill the form below with all your personal details and you will be contacted within 72 hours regarding the selection process. </Typography>
+            <Form />
+          </Box>
         </Paper>
       </Grid>
     </Grid>
