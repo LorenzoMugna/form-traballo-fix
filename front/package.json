@@ -2,11 +2,12 @@
   "name": "search-react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "form-traballo/form",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
-    "@mui/material": "^5.15.15",
+    "@mui/material": "^5.15.20",
     "axios": "^1.7.2",
     "mui-file-input": "^4.0.4",
     "react": "^18.3.1",
