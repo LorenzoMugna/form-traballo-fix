@@ -37,10 +37,31 @@ CREATE TABLE `applications`(
     cvFileName VARCHAR(255) NOT NULL
 ) ENGINE InnoDB DEFAULT CHARSET=`utf8mb4` DEFAULT COLLATE `uca1400_ai_ci`;
 
--- User creation
+
+CREATE TABLE `admin_tokens`(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	email VARCHAR(340) NOT NULL,
+	token VARCHAR(255) NOT NULL,
+	expiration DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE InnoDB DEFAULT CHARSET=`utf8mb4` DEFAULT COLLATE `uca1400_ai_ci`;
+
+CREATE TRIGGER `add_expiration` BEFORE INSERT ON `admin_tokens`
+	FOR EACH ROW
+	SET NEW.`expiration` = CURRENT_TIMESTAMP + INTERVAL 5 MINUTE;
+
+CREATE EVENT `delete_expired_tokens` ON SCHEDULE EVERY 1 HOUR DO
+	DELETE FROM `admin_tokens` WHERE `expiration` < CURRENT_TIMESTAMP;
+
+
+CREATE TABLE `admins`(
+	email VARCHAR(340) PRIMARY KEY
+)ENGINE InnoDB DEFAULT CHARSET=`utf8mb4` DEFAULT COLLATE `uca1400_ai_ci`;
+-- User creation -------------------------------
 
 DROP USER 'php'@'localhost';
 CREATE USER 'php'@'localhost' IDENTIFIED BY 'sabg-php-account{fiu9Vd8dRr/3nrA=}';
 FLUSH PRIVILEGES;
 GRANT INSERT, SELECT, DELETE, UPDATE ON `sabg_applications`.`applications` TO 'php'@'localhost';
+GRANT INSERT, SELECT, DELETE, UPDATE ON `sabg_applications`.`admin_tokens` TO 'php'@'localhost';
+GRANT SELECT ON `sabg_applications`.`admins` TO 'php'@'localhost';
 FLUSH PRIVILEGES;

@@ -55,9 +55,8 @@ if(mime_content_type($_FILES["cv"]["tmp_name"]) != "application/pdf"){ // file p
 
 // email+aggiornamento database--------------------------------------------
 require "./phplib/Database.php";
-require "./phplib/PHPMailer/PHPMailer.php";
-require "./phplib/PHPMailer/SMTP.php";
-require "./phplib/PHPMailer/Exception.php";
+require "./phplib/Mail.php";
+global $mail;
 
 
 $target_dir = "./application-uploads/";
@@ -92,21 +91,7 @@ if(!insertData(
 }
 
 // Send verification email ----------------------------------------------
-$mail = new PHPMailer\PHPMailer\PHPMailer();
-$mail->isSMTP();
-
-$mail->Host = 'mail.jebesantanna.it';
-$mail->Port = 587;
-$mail->SMTPSecure = PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-$mail->SMTPAuth = true;
-
-$mail->Username = 'prova2_noreply@jebesantanna.it';
-$mail->Password = 'pallesudate';
-
-$mail->setFrom('prova2_noreply@jebesantanna.it', 'Business Game');
-$mail->isHTML(true);
-$mail->CharSet = 'UTF-8';
-
+open_mail();
 $mail->addAddress($_POST["email"]);
 $mail->Subject = "Please verify your email address for Sant'Anna Business Game";
 $mail->Body = "
