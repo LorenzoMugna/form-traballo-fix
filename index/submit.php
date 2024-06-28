@@ -1,7 +1,9 @@
 <?php
+/* error reporting --------------------------------
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
+/*------------------------------------------------- */
 
 /* debug ------------------------------
 var_dump($_POST);
@@ -11,9 +13,8 @@ return;
 /*----------------------------------------- */
 
 
-// Check iniziali ----------------------------------------
-
-if (!isset($_POST["firstName"]) 	|| // post
+// Post checks ----------------------------------------
+if (!isset($_POST["firstName"]) 	||
 	!isset($_POST["lastName"]) 		||
 	!isset($_POST["email"]) 		||
 	!isset($_POST["university"])	||
@@ -26,21 +27,19 @@ if (!isset($_POST["firstName"]) 	|| // post
 	return;
 }
 
-
-if (!isset($_FILES["cv"])){ //file
+// file checks --------------------------------------------------
+if (!isset($_FILES["cv"])){ 
 	http_response_code(400);
 	echo "Bad Request";
 	return;
 }
 
-/* non necessario probabilmente
-if(file_exists($target_file)){
-	http_response_code(409);
-	echo "file already exists";
-	return;
-}
-/* ----------------------------------- */
-if($_FILES["cv"]["size"] > 5*1024*1024){ // file<=5MB
+$targetDir = "./application-uploads/";
+$fileBaseName = $_POST["firstName"]."_".$_POST["lastName"]."_".(time()).".pdf";
+$targetFile = $targetDir.$fileBaseName;
+
+
+if($_FILES["cv"]["size"] > 5*1024*1024){ // file <= 5MB
 	http_response_code(413);
 	echo "Request Entity Too Large";
 	return;
@@ -52,21 +51,9 @@ if(mime_content_type($_FILES["cv"]["tmp_name"]) != "application/pdf"){ // file p
 	return;
 }
 
-
-// email+aggiornamento database--------------------------------------------
+// Submission procedure -------------------------------------------
 require "./phplib/Database.php";
-require "./phplib/Mail.php";
-global $mail;
-
-
-$target_dir = "./application-uploads/";
-$file_name = $_POST["firstName"]."_".$_POST["lastName"]."_".(time()).".pdf";
-$target_file = $target_dir.$file_name;
-
-//Generate verification code
-$verificationCode = bin2hex(random_bytes(16));
-
-$verificationSite = "http://localhost/form-traballo/verify.php?email=".$_POST["email"]."&code=".$verificationCode;
+start_connection();
 
 if(!start_connection()){
 	http_response_code(500);
@@ -78,17 +65,34 @@ if(!insertData(
 	$_POST["firstName"],
 	$_POST["lastName"],
 	$_POST["email"],
-	$verificationCode,
+	"none",
 	$_POST["university"],
 	$_POST["fos"],
 	$_POST["attendance"],
 	$_POST["motivation"],
-	$file_name
+	$fileBaseName
 )){
 	http_response_code(500);
 	echo "Internal Server Error";
 	return;
 }
+echo "INSERTED?";
+
+stop_connection();
+
+move_uploaded_file($_FILES["cv"]["tmp_name"], $targetFile);
+
+echo "UPLOADED?";
+http_response_code(200);
+
+/* email+aggiornamento database ----------------------------------------
+require "./phplib/Mail.php";
+global $mail;
+
+//Generate verification code -------------------------------------------
+$verificationCode = bin2hex(random_bytes(16));
+
+$verificationSite = "http://localhost/form-traballo/verify.php?email=".$_POST["email"]."&code=".$verificationCode;
 
 // Send verification email ----------------------------------------------
 open_mail();
@@ -103,12 +107,4 @@ if (!$mail->send()) { http_response_code(500);
 	echo "Internal Server Error";
 	return;
 }
-// -----------------------------------------------------------------------
-
-
-// Upload file -----------------------------------------------------------
-move_uploaded_file($_FILES["cv"]["tmp_name"], $target_file);
-http_response_code(200);
-
-
-stop_connection();
+// ---------------------------------------------------------------------*/

@@ -60,15 +60,20 @@ function insertData(
     string $motivation,
     string $cvFileName
 ): bool {
-    global $dbconn, $servername, $username, $password, $dbname, $connection_up;
-    
-    $stmt = $dbconn->prepare("INSERT INTO applications (firstName, lastName, email, verificationCode, university, fos, attendance, motivation, cvFileName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssss", $firstName, $lastName, $email, $verificationCode, $university, $fos, $attendance, $motivation, $cvFileName);
-    
-    if ($stmt->execute()) {
-        return true;
-    } else {
-        error_log("Error executing statement: " . $stmt->error, 0); 
+    try{
+        global $dbconn, $servername, $username, $password, $dbname, $connection_up;
+        
+        $stmt = $dbconn->prepare("INSERT INTO applications (firstName, lastName, email, verificationCode, university, fos, attendance, motivation, cvFileName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssss", $firstName, $lastName, $email, $verificationCode, $university, $fos, $attendance, $motivation, $cvFileName);
+        
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            error_log("Error executing statement: " . $stmt->error, 0); 
+            return false;
+        }
+    } catch (Exception $e) {
+        error_log("Error inserting data: " . $e->getMessage(), 0);
         return false;
     }
 }
@@ -94,4 +99,17 @@ function verifyEmail(string $email, string $verificationCode): int {
     }
     
     return 200;
+}
+
+function get_applications() : bool | mysqli_result{
+    global $dbconn, $connection_up;
+    if(!$connection_up){
+        return false;
+    }
+
+    $stmt = $dbconn->prepare("SELECT * FROM applications");
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
+    return $result;
 }
