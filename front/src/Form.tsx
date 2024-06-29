@@ -42,7 +42,7 @@ const RadioGroupOther = (props:any) => {
   )
 }
 
-const RegisterForm = () => {
+const RegisterForm = (props:{submitSuccess:() => void, submitFailure:() => void}) => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState('')
@@ -69,17 +69,19 @@ const RegisterForm = () => {
       }
       console.log(data)
       try {
-        await axios.postForm("/submit", data)
-        alert("TODO redirect to success page")
+        await axios.postForm("../submit.php", data)
+        props.submitSuccess()
       } catch(e:any) {
         console.error(e)
-        alert("There was a problem in the submission, please try again later")
+        props.submitFailure()
       }
   }
 
   //action={<Link to="/login" />}>
   return (
     <Fragment>
+      <Typography align="center" color="secondary" variant="h4" sx={{mt:4,mb:2}}>Apply for our Business Game</Typography>
+      <Typography sx={{mb:4}}>Welcome, we are pleased to meet you and look forward to welcoming you here in Pisa! Please fill the form below with all your personal details and you will be contacted within 72 hours regarding the selection process. </Typography>
 
       <form onSubmit={handleSubmit}>
         <Stack spacing={2} direction="row" sx={{marginBottom: 4}}>
@@ -161,7 +163,7 @@ const RegisterForm = () => {
           }}
         />
 
-        <Typography align="center"><Button variant="outlined" color="primary" type="submit" sx={{mb:4}} endIcon={<SendIcon/>}>Apply</Button></Typography>
+        <Typography align="center"><Button variant="outlined" color="primary" type="submit" endIcon={<SendIcon/>}>Apply</Button></Typography>
       </form>
     </Fragment>
   )

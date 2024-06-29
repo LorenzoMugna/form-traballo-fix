@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import Form from './Form';
 import { Box, CssBaseline, GlobalStyles, Grid, Paper, ThemeProvider, Typography, createTheme } from '@mui/material';
+import { Fragment, useState } from 'react';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -32,14 +33,10 @@ const theme = createTheme({
   },
 });
 
-root.render(
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <GlobalStyles
-      styles={{
-        body: { backgroundColor: "background.default" },
-      }}
-    />
+const Elem = () => {
+  const [formState, setFormState] = useState<"success" | "failure" | "insert">("insert");
+
+  return (
     <Grid
       container
       spacing={0}
@@ -48,7 +45,7 @@ root.render(
       justifyContent="center"
     >
       <Grid item xs={3}>
-        <Paper elevation={4} sx={{backgroundColor:"white", pl:4, pr:4}}>
+        <Paper elevation={4} sx={{backgroundColor:"white", pl:4, pr:4, pb:4}}>
           <Box
             width="640px"
             maxWidth="100%"
@@ -58,13 +55,37 @@ root.render(
               alt="Sant'Anna Business Game"
               style={{width:"100%"}}
             />
-            <Typography align="center" color="secondary" variant="h4" sx={{mt:4,mb:2}}>Apply for our Business Game</Typography>
-            <Typography sx={{mb:4}}>Welcome, we are pleased to meet you and look forward to welcoming you here in Pisa! Please fill the form below with all your personal details and you will be contacted within 72 hours regarding the selection process. </Typography>
-            <Form />
+            {
+              (formState === "insert") ?
+                <Form submitSuccess={() => setFormState("success")} submitFailure={() => setFormState("failure")}/>
+              : (formState === "success") ?
+                <Fragment>
+                  <Typography align="center" color="secondary" variant="h4" sx={{mt:4,mb:2}}>Submission successful</Typography>
+                  <Typography sx={{mb:4}}>We have received your submission. You will hear from us soon!</Typography>
+                </Fragment>
+              : (formState === "failure") ?
+                <Fragment>
+                  <Typography align="center" color="secondary" variant="h4" sx={{mt:4,mb:2}}>Submission error</Typography>
+                  <Typography sx={{mb:4}}>There was an error in sending your submission. Please try again later</Typography>
+                </Fragment>
+              : "error"
+            }
           </Box>
         </Paper>
       </Grid>
     </Grid>
+  )
+}
+
+root.render(
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <GlobalStyles
+      styles={{
+        body: { backgroundColor: "background.default" },
+      }}
+    />
+    <Elem/>
   </ThemeProvider>
 );
 
