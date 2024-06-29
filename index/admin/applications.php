@@ -8,7 +8,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 /* ------------------------------------------------------------- */
 
-/* Check if user is logged in as admin ------------------------- */
+/* Check if user is logged in as admin -------------------------
 if($_SESSION["isAdmin"] != true || !isset($_SESSION["isAdmin"])){
 	header("Location: ./login.php");
 	return;
@@ -63,11 +63,15 @@ stop_connection();
 		.color2 {
 			background-color: aqua;
 		}
+		#download-paragraph{
+			font-family: monospace;
+		}
 	</style>
 </head>
 <body>
 	<h1>Applications</h1>
 	<button id="download-button">Download Applications</button>
+	<p id="download-paragraph"></p>
 	<table id="applications-table">
 		<tr class="header">
 			<td class="id">id</td>

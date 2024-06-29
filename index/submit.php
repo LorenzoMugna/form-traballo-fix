@@ -65,24 +65,22 @@ if(!insertData(
 	$_POST["firstName"],
 	$_POST["lastName"],
 	$_POST["email"],
-	"none",
 	$_POST["university"],
 	$_POST["fos"],
 	$_POST["attendance"],
 	$_POST["motivation"],
+	$_POST["allowImages"],
 	$fileBaseName
 )){
 	http_response_code(500);
 	echo "Internal Server Error";
 	return;
 }
-echo "INSERTED?";
 
 stop_connection();
 
 move_uploaded_file($_FILES["cv"]["tmp_name"], $targetFile);
 
-echo "UPLOADED?";
 http_response_code(200);
 
 /* email+aggiornamento database ----------------------------------------

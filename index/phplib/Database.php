@@ -1,9 +1,10 @@
 <?php
+/* error reporting ------------------------------ */
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+/* ---------------------------------------------- */
 
-/* --------------------------------------------
-Schema
+/* Schema -------------------------------------
 Table: `applications`
     id INT PRIMARY KEY AUTO_INCREMENT,
     firstName VARCHAR(255) NOT NULL,
@@ -13,6 +14,7 @@ Table: `applications`
     fos	VARCHAR(255) NOT NULL,
     attendance VARCHAR(255) NOT NULL,
     motivation TEXT NOT NULL,
+    allowImages BOOLEAN NOT NULL,
     cvFileName VARCHAR(255) NOT NULL
 ----------------------------------------------- */
 
@@ -53,18 +55,20 @@ function insertData(
     string $firstName,
     string $lastName,
     string $email,
-    string $verificationCode,
+    //string $verificationCode,
     string $university,
     string $fos,
     string $attendance,
     string $motivation,
+    bool   $allowImages,
     string $cvFileName
 ): bool {
     try{
         global $dbconn, $servername, $username, $password, $dbname, $connection_up;
-        
-        $stmt = $dbconn->prepare("INSERT INTO applications (firstName, lastName, email, verificationCode, university, fos, attendance, motivation, cvFileName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssssssss", $firstName, $lastName, $email, $verificationCode, $university, $fos, $attendance, $motivation, $cvFileName);
+        $intAllowImages = $allowImages ? 1 : 0;
+
+        $stmt = $dbconn->prepare("INSERT INTO applications (firstName, lastName, email, university, fos, attendance, motivation, allowImages, cvFileName) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("sssssssis", $firstName, $lastName, $email, /* $verificationCode, */ $university, $fos, $attendance, $motivation, $intAllowImages, $cvFileName);
         
         if ($stmt->execute()) {
             return true;

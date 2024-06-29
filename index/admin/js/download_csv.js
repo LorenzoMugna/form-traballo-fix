@@ -15,12 +15,14 @@ function download(filename, text) {
 document.getElementById("download-button").addEventListener("click", function(){
     // Generate download of hello.txt file with some content
     let filename = "applications.csv";
-    let text  = "ID,Name,Email,Phone,Address,Status,Date\n"; //Possibly add file name? Or download link?
+    let text  = "ID,FirstName,LastName,Email,Address,Status,Date\n"; //Possibly add file name? Or download link?
     let table = document.getElementById("applications-table");
     for (let i = 1; i < table.rows.length; i++) {
         let row = table.rows[i];
         text += row.cells[0].innerText + "," + row.cells[1].innerText + "," + row.cells[2].innerText + "," + row.cells[3].innerText + "," + row.cells[4].innerText + "," + row.cells[5].innerText + "," + row.cells[6].innerText + "\n";
     }
-    
-    download(filename, text);
+    let paragraph = document.getElementById("download-paragraph");
+    paragraph.innerText = text;
+    document.getElementById("download-button");
+    //download(filename, text);
 }, false);
