@@ -1,5 +1,5 @@
 import {useState, Fragment} from 'react';
-import { TextField, Button, Stack, FormLabel, RadioGroup, FormControlLabel, Radio, Typography, FormControlLabelProps } from '@mui/material';
+import { TextField, Button, Stack, FormLabel, RadioGroup, FormControlLabel, Radio, Typography, FormControlLabelProps, Checkbox, FormGroup } from '@mui/material';
 import { MuiFileInput } from 'mui-file-input';
 import SendIcon from '@mui/icons-material/Send';
 import CloseIcon from "@mui/icons-material/Close";
@@ -57,6 +57,9 @@ const RegisterForm = (props:{submitSuccess:() => void, submitFailure:() => void}
   const [motivation, setMotivation] = useState('')
   
   const [cv, setCv] = useState<File | null>(null)
+
+  const [allowImages, setAllowImages] = useState(false)
+
   const handleCvChange = (val:File | null) => {
     console.log(val)
     setCv(val)
@@ -65,7 +68,7 @@ const RegisterForm = (props:{submitSuccess:() => void, submitFailure:() => void}
   async function handleSubmit(event:any) {
       event.preventDefault();
       const data = {
-        firstName, lastName, email, university, fos: (fos === "Other") ? otherFos : fos, attendance: (attendance === "Other") ? otherAttendance : attendance, motivation, cv:cv!
+        firstName, lastName, email, university, fos: (fos === "Other") ? otherFos : fos, attendance: (attendance === "Other") ? otherAttendance : attendance, motivation, cv:cv!, allowImages
       }
       console.log(data)
       try {
@@ -156,12 +159,17 @@ const RegisterForm = (props:{submitSuccess:() => void, submitFailure:() => void}
           value={cv}
           onChange={handleCvChange}
           fullWidth
-          sx={{mb: 4}}
+          sx={{mb:4}}
           clearIconButtonProps={{
             title: "Remove",
             children: <CloseIcon fontSize="small" />
           }}
         />
+        <Typography sx={{mb:4}}>
+        In accordance with Legislative Decree no. 196 of 2003 on privacy and with Royal Decree no. 633 of 1941 on the right to the image I authorise
+        </Typography>
+        <FormGroup><FormControlLabel control={<Checkbox checked={allowImages} onChange={(event) => setAllowImages(event.target.checked)}/>} sx={{mb:4}} label="free of charge, without any time limit, also pursuant to Articles 10 and 320 of the Italian Civil Code and Articles 96 and 97 of Law no. 633 of 22 April 1941 (Copyright Law), to the publication and/or dissemination in any form of its images on the website and/or official social networks (Instagram, LinkedIn) of the unrecognised Junior Enterprise Business Engineering Association, as well as authorises the storage of the photos and videos in the Association's computer archives and acknowledges that the purpose of such publications is purely informative and possibly promotional;"/></FormGroup>
+        <FormGroup><FormControlLabel required control={<Checkbox />} sx={{mb:4}} label="to the transfer, without time limits, of the personal data contained in the curricula vitae, sent by the participants, for the recruitment procedures of the event sponsors, who will undertake to process them in full compliance with the provisions of Regulation (EU) 679/2016 and Legislative Decree no. 196 of 30 June 2003." /></FormGroup>
 
         <Typography align="center"><Button variant="outlined" color="primary" type="submit" endIcon={<SendIcon/>}>Apply</Button></Typography>
       </form>

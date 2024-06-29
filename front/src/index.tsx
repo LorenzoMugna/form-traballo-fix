@@ -45,7 +45,7 @@ const Elem = () => {
       justifyContent="center"
     >
       <Grid item xs={3}>
-        <Paper elevation={4} sx={{backgroundColor:"white", pl:4, pr:4, pb:4}}>
+        <Paper elevation={4} sx={{backgroundColor:"white", p:4}}>
           <Box
             width="640px"
             maxWidth="100%"
